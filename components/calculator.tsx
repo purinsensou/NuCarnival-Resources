@@ -14,7 +14,7 @@ import {
   type StageOption,
 } from "@/lib/calc"
 
-type EventKey = "main" | "rerun"
+type EventKey = "mainevent" | "rerun"
 
 type EventInput = {
   currentScore: string
@@ -24,7 +24,7 @@ type EventInput = {
 }
 
 type State = {
-  main: EventInput
+  mainevent: EventInput
   rerun: EventInput
   hasMonthlyPass: boolean
   hasVipPass: boolean
@@ -33,7 +33,7 @@ type State = {
 }
 
 const DEFAULT_STATE: State = {
-  main: { currentScore: "", target: "", stageIdx: 0, bonus: "" },
+  mainevent: { currentScore: "", target: "", stageIdx: 0, bonus: "" },
   rerun: { currentScore: "", target: "", stageIdx: 0, bonus: "" },
   hasMonthlyPass: false,
   hasVipPass: false,
@@ -58,7 +58,7 @@ const fmt = (n: number) => n.toLocaleString("en-US")
 export function Calculator() {
   const [state, setState] = useState<State>(DEFAULT_STATE)
   const [hydrated, setHydrated] = useState(false)
-  const [priority, setPriority] = useState<EventKey>("main")
+  const [priority, setPriority] = useState<EventKey>("mainevent")
   const [, forceTick] = useState(0)
 
   // Hydrate from localStorage after mount (avoids SSR mismatch)
@@ -66,7 +66,7 @@ export function Calculator() {
     setState(loadState())
     try {
       const p = localStorage.getItem(PRIORITY_KEY)
-      if (p === "main" || p === "rerun") setPriority(p)
+      if (p === "mainevent" || p === "rerun") setPriority(p)
     } catch {}
     setHydrated(true)
   }, [])
@@ -110,32 +110,32 @@ export function Calculator() {
       (Number(state.boosts.strong) || 0) * BOOST_VALUES.strong
 
     const options: Record<EventKey, StageOption[]> = {
-      main: buildStageOptions(EVENT_DATA.main),
+      mainevent: buildStageOptions(EVENT_DATA.mainevent),
       rerun: buildStageOptions(EVENT_DATA.rerun),
     }
 
     const enabled: Record<EventKey, boolean> = {
-      main: EVENT_DATA.main.enabled !== false,
+      mainevent: EVENT_DATA.mainevent.enabled !== false,
       rerun: EVENT_DATA.rerun.enabled !== false,
     }
 
     const endMs: Record<EventKey, number | null> = {
-      main: parseEndTime(EVENT_DATA.main.end_time),
+      mainevent: parseEndTime(EVENT_DATA.mainevent.end_time),
       rerun: parseEndTime(EVENT_DATA.rerun.end_time),
     }
 
     // Dual mode: both events active with end times → priority allocation applies
-    const dual = enabled.main && enabled.rerun && !!endMs.main && !!endMs.rerun
+    const dual = enabled.mainevent && enabled.rerun && !!endMs.mainevent && !!endMs.rerun
     // The event that ends first is the primary priority (J); the other is secondary (Y)
-    const primaryKey: EventKey = dual && (endMs.main as number) <= (endMs.rerun as number) ? "main" : "rerun"
-    const secondaryKey: EventKey = primaryKey === "main" ? "rerun" : "main"
-    const earliestEnd = dual ? Math.min(endMs.main as number, endMs.rerun as number) : null
+    const primaryKey: EventKey = dual && (endMs.mainevent as number) <= (endMs.rerun as number) ? "mainevent" : "rerun"
+    const secondaryKey: EventKey = primaryKey === "mainevent" ? "rerun" : "mainevent"
+    const earliestEnd = dual ? Math.min(endMs.mainevent as number, endMs.rerun as number) : null
 
     // Effective user priority (auto-forced when only one event is active)
-    const effectivePriority: EventKey = !enabled.main && enabled.rerun
+    const effectivePriority: EventKey = !enabled.mainevent && enabled.rerun
       ? "rerun"
-      : enabled.main && !enabled.rerun
-        ? "main"
+      : enabled.mainevent && !enabled.rerun
+        ? "mainevent"
         : priority
 
     const budgetArgs = (nowMs: number, key: EventKey) => ({
@@ -155,7 +155,7 @@ export function Calculator() {
     const singleBudget = (key: EventKey) => withBoost(computeBudget(budgetArgs(now, key)))
 
     // Base per-event computation
-    const base = (["main", "rerun"] as EventKey[]).map((key) => {
+    const base = (["mainevent", "rerun"] as EventKey[]).map((key) => {
       const input = state[key]
       const disabled = !enabled[key]
       const curr = Number(input.currentScore) || 0
@@ -176,7 +176,7 @@ export function Calculator() {
 
       return {
         key,
-        label: EVENT_DATA[key].stage_name || (key === "main" ? "Main Event" : "Rerun Event"),
+        label: EVENT_DATA[key].stage_name || (key === "mainevent" ? "Main Event" : "Rerun Event"),
         disabled,
         curr,
         target,
