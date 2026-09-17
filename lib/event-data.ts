@@ -27,12 +27,12 @@ export type EventConfig = {
 }
 
 export type EventData = {
-  main: EventConfig
+  mainevent: EventConfig
   rerun: EventConfig
 }
 
 export const EVENT_DATA: EventData = {
-  main: {
+  mainevent: {
     enabled: true,
     stage_name: "Main Event",
     end_time: "2026-09-20T12:00", // UTC+8
