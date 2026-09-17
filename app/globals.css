@@ -297,6 +297,10 @@
   appearance: none;
 }
 
+.sheet tr:nth-of-type(2) td:nth-of-type(2) > input.num-input {
+  font-family: system-ui;
+}
+
 .num-input:focus,
 .select:focus,
 .boost-input:focus {
