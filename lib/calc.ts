@@ -36,7 +36,7 @@ export function parseEndTime(value: string | null | undefined): number | null {
 
 /** Format a remaining-ms duration as "Xd Yh Zm" (or "Ended"). */
 export function formatCountdown(ms: number): string {
-  if (ms <= 0) return "Ended"
+  if (ms <= 0) return "Event ended"
   const d = Math.floor(ms / DAY_MS)
   const h = Math.floor((ms % DAY_MS) / HOUR_MS)
   const m = Math.floor((ms % HOUR_MS) / MIN_MS)
@@ -100,8 +100,8 @@ export function computeBudget({
   const dailyRewardStamina = DAILY_REWARD_STAMINA + passStamina
   const totalDailyStamina = daysLeft * dailyRewardStamina
   const mondayCount = countMondays(nowMs, end)
-  const mondayStamina = mondayCount * MONDAY_STAMINA
-  const rewardStamina = totalDailyStamina + mondayStamina
+  const weeklyStamina = mondayCount * WEEKLY_STAMINA
+  const rewardStamina = totalDailyStamina + weeklyStamina
   const questDeduction = daysLeft * Math.max(0, Number(dailyQuestCost) || 0)
   const totalAvailable = Math.max(0, naturalStamina + rewardStamina - questDeduction)
 
@@ -113,7 +113,7 @@ export function computeBudget({
     dailyRewardStamina,
     totalDailyStamina,
     mondayCount,
-    mondayStamina,
+    weeklyStamina,
     rewardStamina,
     questDeduction,
     totalAvailable,
