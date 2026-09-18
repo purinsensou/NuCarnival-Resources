@@ -40,6 +40,7 @@ export const EVENT_DATA: EventData = {
       { energy: 15, points: 20 },
       { energy: 20, points: 30 },
       { energy: 30, points: 48 },
+      { energy: 40, points: 68 },
       { energy: 50, points: 90 },
     ],
   },
@@ -48,9 +49,9 @@ export const EVENT_DATA: EventData = {
     stage_name: "Rerun Event",
     end_time: "2026-10-01T12:00", // UTC+8
     columns: [
-      { energy: 15, points: 55 },
-      { energy: 20, points: 85 },
-      { energy: 30, points: 115 },
+      { energy: 20, points: 55 },
+      { energy: 30, points: 85 },
+      { energy: 40, points: 115 },
       { energy: 50, points: 150 },
     ],
   },
