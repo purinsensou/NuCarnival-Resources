@@ -37,10 +37,10 @@ export const EVENT_DATA: EventData = {
     stage_name: "Main Event",
     end_time: "2026-09-20T12:00", // UTC+8
     columns: [
-      { energy: 15, points: 100 },
-      { energy: 20, points: 155 },
-      { energy: 30, points: 210 },
-      { energy: 50, points: 210 },
+      { energy: 15, points: 20 },
+      { energy: 20, points: 30 },
+      { energy: 30, points: 48 },
+      { energy: 50, points: 90 },
     ],
   },
   rerun: {
