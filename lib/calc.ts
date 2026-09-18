@@ -5,7 +5,7 @@ export const NATURAL_STAMINA_PER_MIN = 1 / 5 // 1 stamina per 5 minutes
 export const DAILY_REWARD_STAMINA = 30 // base daily reward
 export const MONTHLY_PASS_STAMINA = 60 // extra stamina/day with Monthly Pass
 export const VIP_PASS_STAMINA = 100 // extra stamina/day with VIP Pass
-export const MONDAY_STAMINA = 200 // stamina granted each Monday (UTC+8)
+export const WEEKLY_STAMINA = 200 // stamina available every Monday (UTC+8)
 export const STAMINA_PER_REFILL = 120 // stamina gained per gem refill
 export const GEMS_PER_REFILL = 200 // gems spent per refill
 export const DAILY_PURCHASE_CAP = 3000 // max stamina purchasable per day
@@ -51,7 +51,7 @@ export type Budget = {
   dailyRewardStamina: number
   totalDailyStamina: number
   mondayCount: number
-  mondayStamina: number
+  weeklyStamina: number
   rewardStamina: number
   questDeduction: number
   totalAvailable: number
@@ -86,7 +86,7 @@ export function computeBudget({
       dailyRewardStamina: 0,
       totalDailyStamina: 0,
       mondayCount: 0,
-      mondayStamina: 0,
+      weeklyStamina: 0,
       rewardStamina: 0,
       questDeduction: 0,
       totalAvailable: 0,
